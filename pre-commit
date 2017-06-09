@@ -3,7 +3,6 @@
 Forked from https://gist.github.com/810399
 """
 from __future__ import with_statement, print_function
-import os
 import re
 import subprocess
 import sys
@@ -11,18 +10,17 @@ import pycodestyle
 
 
 options = {
-# don't fill in both of these
-        'select': [
-            ],
-        'ignore': [
-            ],
-        }
+    # don't fill in both of these
+    'select': [],
+    'ignore': [],
+}
 
 
 def system(*args, **kwargs):
     kwargs.setdefault('stdout', subprocess.PIPE)
     proc = subprocess.Popen(args, **kwargs)
     out, err = proc.communicate()
+
     return out
 
 
@@ -35,10 +33,9 @@ def main():
         print(u'Error: select and ignore codes are mutually exclusive')
         sys.exit(1)
 
-    checker = pycodestyle.StyleGuide(**options)
+    checker = pycodestyle.StyleGuide(config_file="setup.cfg", **options)
 
     report = checker.check_files(paths=files)
-
 
     if report.total_errors != 0:
         print('''PEP8 style violations have been detected.  Please fix them
